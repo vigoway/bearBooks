@@ -16,7 +16,6 @@ gem 'foundation-rails'
 gem 'rolify'
 gem 'simple_form'
 gem 'thin'
-gem 'rails_12factor', group: :production
 gem "parse-ruby-client"
 group :development do
   gem 'better_errors'
