@@ -1,12 +1,16 @@
 <br/>
-<p>User: <%= @user.name %> <kbd> Email:  <%= @user.email if @user.email %></kbd> You have <kbd><%= @myBooks.length %></kbd> books.</p>
+<span>User: <%= @user.name %> <kbd> Email:  <%= @user.email if @user.email %></kbd> You have <kbd><%= @myBooks.length %></kbd> books.</span>
 <hr/>
 
 <% if @user.id == current_user.id  %>
 
-<a href="#" class="button medium success" data-reveal-id="myModal">Add a Book</a>
-<a href="#" class="button medium" data-reveal-id="bookModal">Browse Books</a>
-<a href="/usersPool" class="button medium alert">Get Social!</a>
+<div class="row">
+  <div class="small-6 columns">
+    <a href="#" class="button medium success" data-reveal-id="myModal">Add a Book</a>
+    <a href="#" class="button medium" data-reveal-id="bookModal">Browse Books</a>
+    <a href="/usersPool" class="button medium alert">Get Social!</a>
+  </div>
+</div>
 <hr/> <br/>
 
 <div class="row">
@@ -18,14 +22,14 @@
       <%i = 0%>
       <% while i < @myBooks.length %>
       <dd>
-        <a href="#panel<%=i%>"> <h3><small><%= @myBooks[i]["title"] %></small></h3> </a>
-        <div id="panel<%=i%>" class="content">
-          <h4><small>Author(s): <%= @myBooks[i]["author"] %></small> <kbd> ISBN: <%=@myBooks[i]["ISBN"]%></kbd></h4>
-          <hr/>
-          <span class="label"> <%=@myBooks[i]["course"] %> </span> |
-          <span class="success round label">Price: $ <%=@myBooks[i]["price"]%></span>
-          <br/>
-          <blockquote> <%=@myBooks[i]["description"]%> </blockquote>
+        <a href="#panel<%=i%>"> <%= @myBooks[i]["title"] %></a>
+        <div id="panel<%=i%>" class="content"> 
+          <span class="label"> <%=@myBooks[i]["course"] %> </span>
+          <span class="success label">Price: $ <%=@myBooks[i]["price"]%></span> 
+          <h5> <small>Author(s): <%= @myBooks[i]["author"] %></small> <kbd> ISBN: <%=@myBooks[i]["ISBN"]%> </kbd> </h5>
+          
+          <hr/>          
+          <h5> <%=@myBooks[i]["description"]%></h5>
           <form action="deleteBook" method="POST">
             <input type="hidden" name="indexToDelete" value=<%=i%>/>
             <input type="submit" class="button tiny alert" data-tooltip class="has-tip" title="Can't be undone" value="remove"/>
@@ -83,6 +87,7 @@
               </tbody>
           </table>
         </div>
+        <h6> Thank you for visiting Bears Books. <br/> Developed By <em>Vigo</em> @ <a href="wustl.edu"> WUSTL </a> :) </h6> 
 
   </div>
 </div>
