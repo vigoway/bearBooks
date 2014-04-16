@@ -1,4 +1,46 @@
-<h3>Home</h3>
-<% @users.each do |user| %>
-  <p>User: <%=link_to user.name, user %></p>
-<% end %>
+<h1 class="green">Welcome to Bears Books.</h1>
+<h6> A textbook exchange platform for WUSTL members since 2013.</h6>
+
+<br/>
+
+<h6> <span class="green"> <%= @users.length %> </span> registered users. | <span class="green"> 33,236 </span> books on sale. </h6>
+<hr/>
+
+<div class="row">
+
+  <div class="small-2 large-6 columns">
+  	<ul class="example-orbit" data-orbit>
+  		<li>
+	    	<img src="../assets/examples/book1.jpg" alt="slide 1" />
+	    	<div class="orbit-caption">
+	      	Bears Books
+	    	</div>
+  		</li>
+  		<li>	
+		    <img src="../assets/examples/book2.jpg" alt="slide 2" />
+		    <div class="orbit-caption">
+		      Join Today!
+		    </div>
+  		</li>
+ 		<li>
+		    <img src="../assets/examples/book3.jpg" alt="slide 3" />
+		    <div class="orbit-caption">
+		      Knowledge is POWER.
+		    </div>
+  		</li>
+	</ul>
+  </div>
+
+  <div class="small-4 large-6 columns">
+  	<h3 class="green"> About Bears Books </h3>
+  	<h5>
+  		A platform that allows the University members to post books (primarily textbooks) they want sell 
+  		and/or search for books on sale from other University members. 
+  		Essentially, the platform is half automated and half "self-assisted", 
+  		and requires communication among users. 
+  	</h5>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,41 @@
+<br/>
+<p>Hi! <%= @user.name %> You have <kbd> <%= @requests.length %></kbd> requests. You have <kbd><%= @friends.length %></kbd> friends.</p>
+<hr/>
+
+<% if @requests.length > 0 %>
+<h4> respond to requests: </h4>
+<% @requests.each do |r| %>
+
+    <div class="row">
+     <div class="small-4 columns">
+      <h5> <%= link_to User.find(r['initiator']).name , user_path(r['initiator']) %> wants to be friends: </h5>
+     </div>
+     <div class="small-1 columns">
+      <form action = "acceptReq" method = "post">
+        <input type="hidden" name = "initiator" value=<%= r['initiator']%>/>
+        <input type="submit" class="success tiny button" value="OK">
+      </form>
+     </div>
+     <div class="small-1 columns">
+      <form action = "declineReq" method = "post">
+        <input type="hidden" name = "initiator" value=<%= r['initiator']%>/>
+        <input type="submit" class="alert tiny button" value="No Wei!">
+      </form>
+      </div>
+      <div class="small-6 columns">
+      </div>
+    </div>
+<% end %>
+    <hr/>
+<% end %>
+
+<% if @friends.length > 0 %>
+    <h4> Your friends: </h4>
+    <% @friends.each do |f| %>
+        <% if User.where(id: f['friend']).empty? %>
+            <span class="secondary button tiny disabled"> deleted user</span>
+        <%else %>
+            <%= link_to User.find(f["friend_id"]).name, user_path(f['friend_id']) %>
+        <% end %>
+    <% end %>
+<% end %>

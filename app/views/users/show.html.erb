@@ -1,3 +1,241 @@
-<h3>User</h3>
-<p>User: <%= @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+<br/>
+<p>User: <%= @user.name %> <kbd> Email:  <%= @user.email if @user.email %></kbd> You have <kbd><%= @myBooks.length %></kbd> books.</p>
+<hr/>
+
+<% if @user.id == current_user.id  %>
+
+<a href="#" class="button medium success" data-reveal-id="myModal">Add a Book</a>
+<a href="#" class="button medium" data-reveal-id="bookModal">Browse Books</a>
+<a href="/usersPool" class="button medium alert">Get Social!</a>
+<hr/> <br/>
+
+<div class="row">
+  <div class="small-6 columns left">
+    <h5 class="green"> Your Books </h5>
+
+    <dl class="accordion" data-accordion>
+      <dd><dt></dt></dd>
+      <%i = 0%>
+      <% while i < @myBooks.length %>
+      <dd>
+        <a href="#panel<%=i%>"> <h3><small><%= @myBooks[i]["title"] %></small></h3> </a>
+        <div id="panel<%=i%>" class="content">
+          <h4><small>Author(s): <%= @myBooks[i]["author"] %></small> <kbd> ISBN: <%=@myBooks[i]["ISBN"]%></kbd></h4>
+          <hr/>
+          <span class="label"> <%=@myBooks[i]["course"] %> </span> |
+          <span class="success round label">Price: $ <%=@myBooks[i]["price"]%></span>
+          <br/>
+          <blockquote> <%=@myBooks[i]["description"]%> </blockquote>
+          <form action="deleteBook" method="POST">
+            <input type="hidden" name="indexToDelete" value=<%=i%>/>
+            <input type="submit" class="button tiny alert" data-tooltip class="has-tip" title="Can't be undone" value="remove"/>
+          </form>
+        </div>
+      </dd>
+     <%i+=1%>
+     <% end %>
+     </dl>
+
+
+  </div>
+  <div class="small-6 columns">
+    <h4 class="green">[ All Books ] </h4>
+    <form action="show" method="POST">
+      <div class="row">
+        <div class="small-10 columns">
+          <input type="hidden" name="id" value=<%=current_user.id%> />
+          <input type="text" name="searchToken" placeholder="Search all books, results will be displayed below:" />
+        </div>
+        <div class="small-2 columns">
+          <input type="submit" class="button tiny" value="search"/>
+        </div>
+      </div>
+    </form>
+
+        <div>
+          <table>
+            <thead>
+            <tr>
+              <th width="200">Book</th>
+              <th>Author(s)</th>
+              <th width="150">Price</th>
+              <th width="350">Seller</th>
+            </tr>
+            </thead>
+            <tbody>
+             <% @results.each do |b| %>
+                <tr>
+                  <td> <%=b['title']%>
+                    <% likes =  Parse::Query.new("Likes").eq("book_id", b['objectId']).get %>
+                    <br/> <kbd> <%= likes.length %></kbd> likes.
+                  </td>
+                  <td><%=b['author']%></td>
+                  <td> <%=b['price']%></td>
+                  <td> <% if User.where(id: b['user_id']).empty? %>
+                        <span class="alert button tiny disabled"> user is gone :(</span>
+                        <small> search the web for it!</small>
+                    <%else %>
+                        <%=link_to User.find(b['user_id']).name, user_path(b['user_id']) %>
+                    <% end %>  </td>
+
+                </tr>
+             <% end %>
+              </tbody>
+          </table>
+        </div>
+
+  </div>
+</div>
+
+
+
+<div id="bookModal" class="reveal-modal" data-reveal>
+  <table>
+    <thead>
+    <tr>
+      <th width="200">Book</th>
+      <th>Author(s)</th>
+      <th width="150">Price</th>
+      <th width="150">Seller</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @books[0..4].each do |b| %>
+        <tr>
+          <td> <%=b['title']%> </td>
+          <td><%=b['author']%></td>
+          <td> <%=b['price']%></td>
+          <td>
+            <% if User.where(id: b['user_id']).empty? %>
+                <span class="alert button tiny disabled"> user is gone :(</span>
+                <small> search the web for it!</small>
+            <%else %>
+                <%=link_to User.find(b['user_id']).name, user_path(b['user_id']) %>
+            <% end %>
+           </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <small> *Displaying 5 most recent books, to see more, use the search function! </small>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="myModal" class="reveal-modal" data-reveal>
+  <form data-abide action="uploadBook" method="POST">
+    <div class="name-field">
+      <label>Book title <small>required</small></label>
+      <input type="text" name="title" required pattern="[a-zA-Z]+">
+      <small class="error">Book name is required and must be a string.</small>
+    </div>
+    <div class="author-field">
+      <label>Written by: <small>optional: include authors of the book</small></label>
+      <input type="text" name="author" pattern="[a-zA-Z]+">
+      <small class="error">Book name is required and must be a string.</small>
+    </div>
+    <div class="course-field">
+      <label>Used in <small>Optional: for example, CSE 330 </small> </label>
+      <input type="text" name="course">
+    </div>
+    <div class="ISBN-field">
+      <label>ISBN <small>Optional</small></label>
+      <input type="text" name="ISBN" pattern=number>
+      <small class="error">Not a valid ISBN.</small>
+    </div>
+    <div class="short-description-field">
+      <label>Short Description <small>Optional: describe the book</small></label>
+      <input type="text" name="description">
+    </div>
+    <div class="price-field">
+      <label>price <small>required, in $</small></label>
+      <input type="number" name="price" required pattern=number>
+      <small class="error">price is required and must be a number.</small>
+    </div>
+    <div class="date-field">
+      <label>expire in <small>optional, in days</small></label>
+      <input type="number" name="days" required pattern=number>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<%else%>
+
+   <%if @user.id != current_user.id && !@friends.include?(current_user.id) %>
+       <form action="addFriend" method="post">
+        <input type = "hidden" name = "initiator" value=<%=current_user.id%>/>
+        <input type = "hidden" name = "responder" value = <%= @user.id%> />
+        <input type = "submit" class="button" value="Add Friend"/>
+      </form>
+   <% else %>
+    <form action="deFriend" method="post">
+      <input type = "hidden" name = "initiator" value=<%=current_user.id%>/>
+      <input type = "hidden" name = "responder" value = <%= @user.id%> />
+      <input type = "submit" class="alert button" value="Unfriend"/>
+    </form>
+   <%end%>
+    <hr/>
+  <h5><%=@user.name%>'s Books: </h5>
+    <table>
+      <thead>
+      <tr>
+        <th width="200">Book</th>
+        <th>Author(s)</th>
+        <th width="150">Price</th>
+        <th width="350">Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @myBooks.each do |b| %>
+          <tr>
+            <td> <%=b['title']%>  <br/>
+              <% likes =  Parse::Query.new("Likes").eq("book_id", b['objectId']).get %>
+              been liked <kbd> <%= likes.length %></kbd> times.
+              <form action="likeBook" method="post">
+                <input type="hidden" name="book_id" value=<%= b['objectId']%> />
+                <input type="hidden" name="user_id" value=<%= b['user_id']%> />
+                <input type="submit" value="GB it!" class="button tiny secondary"/>
+              </form>
+            </td>
+            <td><%=b['author']%></td>
+            <td> <%=b['price']%></td>
+            <td> <%=b['description']%> </td>
+
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+
+    <% if @comments.length > 0 %>
+        <hr/>
+        <table>
+          <tr>
+            <th>Comment</th>
+            <th>by</th>
+          </tr>
+          <% @comments.each do |c| %>
+          <tr>
+            <td width="500"> <%= c["comment"] %> </td>
+            <td> <%= User.find(c["commenter_id"]).name %> </td>
+          </tr>
+           <% end %>
+        </table>
+      <% end %>
+    <hr/>
+
+    <form action="addComment" method="post">
+      <input type="hidden" name="user_id" value=<%=@user.id%> />
+      <input type="text" name="comment" placeholder="Leave a comment to this seller and their books"/>
+      <input type="submit" value="comment" class = "small button"/>
+    </form>
+
+
+
+<%end%>
+
+
+
+
