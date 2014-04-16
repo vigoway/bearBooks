@@ -17,6 +17,8 @@ gem 'rolify'
 gem 'simple_form'
 gem 'thin'
 gem "parse-ruby-client"
+gem 'better_errors'
+gem 'unicorn'
 
 group :production do
   gem 'rails_12factor'
