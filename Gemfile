@@ -16,6 +16,7 @@ gem 'foundation-rails'
 gem 'rolify'
 gem 'simple_form'
 gem "parse-ruby-client"
+gem 'thin'
 gem 'unicorn'
 
 group :production do
