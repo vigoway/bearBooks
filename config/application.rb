@@ -8,7 +8,8 @@ Bundler.require(:default, Rails.env)
 
 module BearBooks
   class Application < Rails::Application
-	config.serve_static_assets = true
+	  config.serve_static_assets = true
+    config.assets.compile = true
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.test_framework :rspec
