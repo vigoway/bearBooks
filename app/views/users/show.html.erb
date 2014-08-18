@@ -3,7 +3,7 @@
 <hr/>
 
 <% if @user.id == current_user.id  %>
-
+<!-- options regarding books, add/browser trigger popups, get social redirects -->
 <div class="row">
   <div class="small-6 columns">
     <a href="#" class="button medium success" data-reveal-id="myModal">Add a Book</a>
@@ -12,7 +12,7 @@
   </div>
 </div>
 <hr/> <br/>
-
+<!--books info: LEFT shows the user's books. RIGHT side displays search result -->
 <div class="row">
   <div class="small-6 columns left">
     <h5 class="green"> Your Books </h5>
@@ -23,12 +23,12 @@
       <% while i < @myBooks.length %>
       <dd>
         <a href="#panel<%=i%>"> <%= @myBooks[i]["title"] %></a>
-        <div id="panel<%=i%>" class="content"> 
+        <div id="panel<%=i%>" class="content">
           <span class="label"> <%=@myBooks[i]["course"] %> </span>
-          <span class="success label">Price: $ <%=@myBooks[i]["price"]%></span> 
+          <span class="success label">Price: $ <%=@myBooks[i]["price"]%></span>
           <h5> <small>Author(s): <%= @myBooks[i]["author"] %></small> <kbd> ISBN: <%=@myBooks[i]["ISBN"]%> </kbd> </h5>
-          
-          <hr/>          
+
+          <hr/>
           <h5> <%=@myBooks[i]["description"]%></h5>
           <form action="deleteBook" method="POST">
             <input type="hidden" name="indexToDelete" value=<%=i%>/>
@@ -39,8 +39,6 @@
      <%i+=1%>
      <% end %>
      </dl>
-
-
   </div>
   <div class="small-6 columns">
     <h4 class="green">[ All Books ] </h4>
@@ -91,7 +89,7 @@
 </div>
 
 
-
+<!-- comes up when "Browse Books" is clicked -->
 <div id="bookModal" class="reveal-modal" data-reveal>
   <table>
     <thead>
@@ -125,6 +123,7 @@
   <a class="close-reveal-modal">&#215;</a>
 </div>
 
+<!-- comes up when "Add a Book" is clicked -->
 <div id="myModal" class="reveal-modal" data-reveal>
   <form data-abide action="uploadBook" method="POST">
     <div class="name-field">
@@ -238,7 +237,3 @@
 
 
 <%end%>
-
-
-
-
