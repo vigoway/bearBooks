@@ -1,5 +1,5 @@
-This project uses Rails 4 and Foundation 5. <br/>
-Sqlite (local db) and Parse (cloud db). <br/>
+This project uses <b> Rails 4</b> and <b>Foundation 5</b>  
+<b> sqlite3 </b> (local db) and <b> Parse </b> (cloud db)   
 ##Main file: app/controller/users_controller.rb
 
  Ideally there would be a separate controller for books,
