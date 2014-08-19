@@ -2,6 +2,7 @@ This project uses  `Rails 4` and `Foundation 5`
 
 `sqlite3`  (local db) and `Parse` (cloud db) 
 
+Current Status: running (Heroku: [Bearbooks] (https://bearbooks.herokuapp.com)) 
 
 ######Main file: app/controller/users_controller.rb
 
